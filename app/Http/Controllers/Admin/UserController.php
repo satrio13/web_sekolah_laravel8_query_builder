@@ -31,10 +31,10 @@ class UserController extends Controller
     function simpan_user(Request $request)
     {
         $request->validate([
-            'nama' => 'required|max:100',
-            'username' => 'required|alpha_num|unique:tb_user,username|min:5|max:100',
-            'password1' => 'required|alpha_num|min:5|max:100',
-            'password2' => 'required|alpha_num|min:5|max:100|same:password1',
+            'nama' => 'required|max:50',
+            'username' => 'required|alpha_num|unique:tb_user,username|min:5|max:30',
+            'password1' => 'required|alpha_num|min:5|max:30',
+            'password2' => 'required|same:password1',
             'email' => 'required|email|unique:tb_user,email|max:100',
             'is_active' => 'required'
         ]);
@@ -73,44 +73,36 @@ class UserController extends Controller
         if(!empty($request->input('password')))
         {
             $request->validate([
-                'nama' => 'required|max:100',
-                'username' => 'required|alpha_num|min:5|max:100|cek_username:'.$id,
-                'password' => 'alpha_num|min:5|max:100',
+                'nama' => 'required|max:50',
+                'username' => 'required|alpha_num|min:5|max:30|cek_username:'.$id,
+                'password' => 'alpha_num|min:5|max:30',
                 'email' => 'required|email|max:100|cek_email:'.$id,
                 'is_active' => 'required'
             ]);
         }else
         {
             $request->validate([
-                'nama' => 'required|max:100',
-                'username' => 'required|alpha_num|min:5|max:100|cek_username:'.$id,
+                'nama' => 'required|max:50',
+                'username' => 'required|alpha_num|min:5|max:30|cek_username:'.$id,
                 'email' => 'required|email|max:100|cek_email:'.$id,
                 'is_active' => 'required'
             ]);
         }
         
         $user = $this->user_model->cek_user($id);
+
+        $data = [
+            'nama' => $request->input('nama'),
+            'username' => trim($request->input('username')),
+            'email' => trim($request->input('email')),
+            'level' => $user->level,
+            'is_active' => $request->input('is_active'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+        
         if(!empty($request->input('password')))
         {
-            $data = [
-                'nama' => $request->input('nama'),
-                'username' => trim($request->input('username')),
-                'password' => password_hash(trim($request->input('password')), PASSWORD_DEFAULT),
-                'email' => trim($request->input('email')),
-                'level' => $user->level,
-                'is_active' => $request->input('is_active'),
-                'updated_at' => date('Y-m-d H:i:s')
-            ];
-        }else
-        {
-            $data = [
-                'nama' => $request->input('nama'),
-                'username' => trim($request->input('username')),
-                'email' => trim($request->input('email')),
-                'level' => $user->level,
-                'is_active' => $request->input('is_active'),
-                'updated_at' => date('Y-m-d H:i:s')
-            ];
+            $data['password'] = password_hash(trim($request->input('password')), PASSWORD_DEFAULT);
         }
             
         $this->user_model->update_user($data, $id);
@@ -151,8 +143,8 @@ class UserController extends Controller
     {
         $id = session('id_user');
         $request->validate([
-            'nama' => 'required|max:100',
-            'username' => 'required|alpha_num|min:5|max:100|cek_username:'.$id,
+            'nama' => 'required|max:50',
+            'username' => 'required|alpha_num|min:5|max:30|cek_username:'.$id,
             'email' => 'required|email|max:100|cek_email:'.$id,
         ]);
         
@@ -182,8 +174,8 @@ class UserController extends Controller
         $get = $this->user_model->get_user($id);
         
         $request->validate([
-            'password1' => 'required|alpha_num|min:5|max:100',
-            'password2' => 'required|alpha_num|min:5|max:100|same:password1',
+            'password1' => 'required|alpha_num|min:5|max:30',
+            'password2' => 'required|same:password1',
             'password3' => 'required',
         ]);
         
