@@ -38,7 +38,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">NAMA <span class="text-danger">*</span></label>
                                     <div class="col-sm-5">
-                                        <input type='text' name='nama' maxlength="100" class='form-control required' placeholder='Nama' value="{{ old('nama', $data->nama) }}">
+                                        <input type='text' name='nama' maxlength='50' class='form-control required' placeholder='Nama' value="{{ old('nama', $data->nama) }}">
                                         <small class="text-danger">
                                             {{ ($errors->first('nama')) ? $errors->first('nama') : '' }}
                                         </small>
@@ -65,7 +65,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">EMAIL <span class="text-danger">*</span></label>
                                     <div class="col-sm-5">
-                                        <input type='email' name='email' class='form-control sepasi required' placeholder='Email' value="{{ old('email', $data->email) }}">
+                                        <input type='email' name='email' class='form-control sepasi required' maxlength='100' placeholder='Email' value="{{ old('email', $data->email) }}">
                                         <small class="text-danger">
                                             {{ ($errors->first('email')) ? $errors->first('email') : '' }}
                                         </small>
